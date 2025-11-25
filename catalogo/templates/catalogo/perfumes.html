@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Perfumes{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="alert alert-dark display-5 text-center">
+    <img src="{% static 'images/logo.png' %}" width="100px" alt="Logo">
+    Listado de Perfumes
+  </div>
+
+  <!-- Si hay perfumes -->
+  {% if perfumes %}
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Marca</th>
+        <th>Tamaño (ml)</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th>Año lanzamiento</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for perfume in perfumes %}
+      <tr>
+        <td scope="row">{{ perfume.id }}</td>
+        <td>{{ perfume.nombre }}</td>
+        <td>{{ perfume.marca }}</td>
+        <td>{{ perfume.tamano_ml }}</td>
+        <td>${{ perfume.precio }}</td>
+        <td>{{ perfume.stock }}</td>
+        <td>{{ perfume.anio_lanzamiento }}</td>
+        <td>
+          <!-- Botón editar -->
+          <a href="{% url 'catalogo:editar' perfume.id %}" class="btn btn-success btn-sm">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <!-- Botón eliminar (API) -->
+          <button onclick="eliminarPerfume({{ perfume.id }})" class="btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <!-- Si no hay perfumes -->
+  <div class="alert alert-info text-center">No hay perfumes registrados</div>
+  {% endif %}
+</div>
+
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
